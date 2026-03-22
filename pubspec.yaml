@@ -1,6 +1,6 @@
 name: ozow_payment_plugin
 description: "A Flutter  Plugin for Ozow payment gateway - Supports Card, Pay by Bank and PayShap"
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/TillyLegodi/ozow_payment_plugin
 repository: https://github.com/TillyLegodi/ozow_payment_plugin
 issue_tracker: https://github.com/TillyLegodi/ozow_payment_plugin/issues

@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+
+
 ## [1.0.0] - 2026-03-20
 
 ### 🎉 Initial Release
@@ -92,6 +94,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Receipt generation
 
 ---
+## [1.0.1] - 2026-03-22
+
+### Fixed
+- Updated README with full documentation
+- Added GitHub repository links to pubspec.yaml
+
 
 *For upgrade instructions and migration guides, see the
 [README](README.md).*
