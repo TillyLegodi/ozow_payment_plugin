@@ -2,19 +2,27 @@
 
 The easiest way to accept payments in South Africa using Flutter.
 
-🚀 3 lines to get started  
-🔐 Production-ready architecture  
-🔥 Firebase integration included  
+🚀 3 lines to get started
+🔐 Production-ready architecture
+🔥 Firebase integration included
 
-[Get Started](#quick-start) • [Documentation](#firebase-integration) • [Example App](./example)
+[Get Started](#-quick-start-testing-only) • [Production Setup](#-production-backend-setup-firebase) • [Example App](./example)
 
 ---
 
-## 🎥 Demo (Coming Soon)
+## 🎥 Demo
 
-Add GIF here
+Watch the plugin in action:
 
+👉 https://youtube.com/shorts/H1KOdCjFCEk?feature=share
 
+This demo shows:
+
+* Payment flow
+* Ozow checkout UI
+* Result handling (success / cancel / error)
+
+---
 
 # ozow_payment_plugin
 
@@ -105,47 +113,185 @@ Ozow API
 
 ---
 
+# 🔐 Production Backend Setup (Firebase)
+
+Follow these steps to securely integrate Ozow in production.
+
+---
+
+## 1️⃣ Install Node.js
+
+Download and install Node.js (LTS).
+
+Verify:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 2️⃣ Install Firebase CLI
+
+```bash
+npm install -g firebase-tools
+firebase --version
+```
+
+---
+
+## 3️⃣ Login to Firebase
+
+```bash
+firebase login
+```
+
+---
+
+## 4️⃣ Initialize Firebase Functions
+
+From your project root:
+
+```bash
+firebase init functions
+```
+
+Select:
+
+* JavaScript
+* Your Firebase project
+* Install dependencies
+
+---
+
+## 5️⃣ Add your Cloud Function
+
+Inside `functions/index.js`:
+
+```javascript
+const functions = require("firebase-functions");
+const crypto = require("crypto");
+
+exports.createOzowPayment = functions.https.onRequest((req, res) => {
+  const { amount, reference } = req.body;
+
+  const siteCode = process.env.OZOW_SITE_CODE;
+  const privateKey = process.env.OZOW_PRIVATE_KEY;
+
+  const data = `${siteCode}${reference}${amount}${privateKey}`;
+
+  const hash = crypto
+    .createHash("sha512")
+    .update(data)
+    .digest("hex");
+
+  res.json({
+    siteCode,
+    apiKey: process.env.OZOW_API_KEY,
+    amount,
+    reference,
+    hash,
+    bankReference: "My Store",
+    isTest: true
+  });
+});
+```
+
+---
+
+## 6️⃣ Install dependencies
+
+```bash
+cd functions
+npm install firebase-admin firebase-functions
+```
+
+---
+
+## 7️⃣ Add environment variables
+
+Create `functions/.env`:
+
+```env
+OZOW_SITE_CODE=YOUR_SITE_CODE
+OZOW_API_KEY=YOUR_API_KEY
+OZOW_PRIVATE_KEY=YOUR_PRIVATE_KEY
+```
+
+---
+
+## 8️⃣ Protect your secrets
+
+Add to `.gitignore`:
+
+```gitignore
+functions/.env
+```
+
+---
+
+## 9️⃣ Deploy your functions
+
+From project root:
+
+```bash
+firebase deploy --only functions
+```
+
+---
+
+## 🔟 Use your backend URL
+
+After deployment, Firebase will give you:
+
+```text
+https://YOUR_REGION-YOUR_PROJECT.cloudfunctions.net/createOzowPayment
+```
+
+Use this in your Flutter app.
+
+---
+
+## 🧪 Optional: Test before deploy
+
+```bash
+cd functions
+node -e "require('./index.js'); console.log('OK')"
+```
+
+---
+
+## ⚠️ Common Errors
+
+**npm not recognized**
+→ Install Node.js and restart terminal
+
+**404 from backend**
+→ Check your function URL is correct
+
+**Cannot find module**
+→ Check folder structure and file names
+
+---
+
 ## 🔥 Firebase Integration
 
 ### Remote Config (Safe Usage)
 
 Use Remote Config for:
 
+* Feature toggles
 * Payment enable/disable
-* Payment method toggles
 * Test vs live mode
-* UI configurations
 
 ```dart
 final isTest = remoteConfig.getBool('ozow_is_test');
 ```
 
-### ⚠️ Do NOT store secrets in Remote Config
-
-Remote Config values are accessible by the app.
-
 ---
 
-### Cloud Functions (Secure Hash Generation)
-
-```javascript
-exports.createOzowPayment = async (req, res) => {
-  const hash = generateSHA512Hash({
-    siteCode: process.env.OZOW_SITE_CODE,
-    privateKey: process.env.OZOW_PRIVATE_KEY,
-    amount: req.body.amount,
-    reference: req.body.reference,
-  });
-
-  res.json({
-    siteCode: process.env.OZOW_SITE_CODE,
-    apiKey: process.env.OZOW_API_KEY,
-    amount: req.body.amount,
-    reference: req.body.reference,
-    hash,
-  });
-};
-```
+### ⚠️ Never store secrets in Remote Config
 
 ---
 
@@ -167,17 +313,17 @@ if (result.isSuccess) {
 
 ## 🎯 Use Cases
 
-* Ride-hailing apps (Uber-style platforms)
-* E-commerce apps
+* Ride-hailing apps
+* E-commerce platforms
 * Wallet systems
-* Subscription platforms
-* Fintech & SaaS products
+* Subscription apps
+* Fintech products
 
 ---
 
 ## 🏦 Supported Payments
 
-* 💳 Card (Visa / Mastercard with 3DS)
+* 💳 Card (Visa / Mastercard)
 * 🏦 Pay by Bank (EFT)
 * ⚡ PayShap
 * 🎫 Vouchers
@@ -214,4 +360,3 @@ Pull requests are welcome.
 ---
 
 Built with ❤️ by Tilly Legodi for the African Flutter community 🇿🇦
-
