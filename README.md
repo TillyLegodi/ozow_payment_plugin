@@ -1,15 +1,15 @@
-# ozow_payment_plugin
+# 💳 Ozow Flutter SDK
 
-A Flutter  Plugine for Ozow payment gateway - Supports Card, Pay by Bank and PayShap
+The easiest way to accept payments in South Africa using Flutter.
 
-## Getting Started
+🚀 3 lines to get started  
+🔐 Production-ready architecture  
+🔥 Firebase integration included  
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/to/develop-plugins),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+[Get Started](#quick-start) • [Documentation](#firebase-integration) • [Example App](./example)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
 
+## 🎥 Demo (Coming Soon)
+
+Add GIF here
